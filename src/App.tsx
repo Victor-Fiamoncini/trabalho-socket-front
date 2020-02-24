@@ -59,7 +59,7 @@ export default function App(): ReactElement {
       <header className="bg-primary">
         <Container className="py-3 text-center">
           <h1 className="display-6 text-white font-weight-bold">
-            Trabalho TCP - Socket
+            Trabalho TCP Socket
           </h1>
         </Container>
       </header>
@@ -84,6 +84,7 @@ export default function App(): ReactElement {
                 className="shadow-sm border-0"
                 type="text"
                 placeholder="Seu nome"
+                required
                 name="name"
                 value={name}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -96,6 +97,7 @@ export default function App(): ReactElement {
                 className="shadow-sm border-0"
                 as="textarea"
                 placeholder="Mensagem"
+                required
                 name="content"
                 value={content}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
