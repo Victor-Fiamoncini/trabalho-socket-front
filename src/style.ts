@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components'
+import { MessageStyledProps } from './types'
 
 export default createGlobalStyle`
   * {
@@ -45,10 +46,10 @@ export const Messages = styled.section`
   background: #fff;
 `
 
-export const Message = styled.div`
+export const Message = styled.div<MessageStyledProps>`
   display: block;
   margin: 0;
-  text-align: right;
+  text-align: ${({ left }) => (left ? 'left' : 'right')} !important;
   &:not(:last-of-type) {
     margin: 0 0 10px 0;
   }

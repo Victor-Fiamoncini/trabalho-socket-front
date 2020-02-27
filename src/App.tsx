@@ -21,12 +21,13 @@ import GlobalStyle, { Messages, Message, Wrapper } from './style'
  */
 export default function App(): ReactElement {
   const [formData, setFormData] = useState<FormStateProps>({
+    id: io.id,
     name: '',
     content: '',
   })
   const [messages, setMessages] = useState<MessageStateProps[]>([])
 
-  const { name, content } = formData
+  const { id, name, content } = formData
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     setFormData({
@@ -41,7 +42,7 @@ export default function App(): ReactElement {
     if (name.length > 0 && content.length > 0) {
       io.emit('message', formData)
 
-      setMessages([...messages, { name, content }])
+      setMessages([...messages, { id, name, content }])
       setFormData({ ...formData, content: '' })
     }
   }
@@ -51,7 +52,7 @@ export default function App(): ReactElement {
   }, [])
 
   io.on('message', ({ name, content }: MessageType) => {
-    setMessages([...messages, { name, content }])
+    setMessages([...messages, { id: Math.random().toString(), name, content }])
   })
 
   return (
@@ -67,7 +68,7 @@ export default function App(): ReactElement {
         <Wrapper className="shadow">
           <Messages className="shadow-sm">
             {messages.map(message => (
-              <Message key={Math.random()}>
+              <Message key={Math.random()} left={message.id !== id}>
                 <p>
                   <strong>{message.name}</strong> {message.content}
                 </p>
