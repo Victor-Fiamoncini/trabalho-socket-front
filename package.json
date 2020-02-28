@@ -23,7 +23,8 @@
     "react-scripts": "3.4.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "^5.0.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "uuid": "^7.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",
     "@types/styled-components": "^4.4.3",
+    "@types/uuid": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
     "eslint": "^6.8.0",

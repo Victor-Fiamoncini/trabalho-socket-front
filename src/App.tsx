@@ -13,6 +13,11 @@ import {
   Message as MessageType,
 } from './types'
 
+import Header from './components/Header'
+import Footer from './components/Footer'
+
+import { v4 } from 'uuid'
+
 import { Button, Container, Form } from 'react-bootstrap'
 import GlobalStyle, { Messages, Message, Wrapper } from './style'
 
@@ -52,18 +57,12 @@ export default function App(): ReactElement {
   }, [])
 
   io.on('message', ({ name, content }: MessageType) => {
-    setMessages([...messages, { id: Math.random().toString(), name, content }])
+    setMessages([...messages, { id: v4().toString(), name, content }])
   })
 
   return (
     <>
-      <header className="bg-primary">
-        <Container className="py-3 text-center">
-          <h1 className="display-6 text-white font-weight-bold">
-            Trabalho TCP Socket
-          </h1>
-        </Container>
-      </header>
+      <Header />
       <Container className="py-3">
         <Wrapper className="shadow">
           <Messages className="shadow-sm">
@@ -96,7 +95,7 @@ export default function App(): ReactElement {
             <Form.Group>
               <Form.Control
                 className="shadow-sm border-0"
-                as="textarea"
+                type="text"
                 placeholder="Mensagem"
                 required
                 name="content"
@@ -104,7 +103,7 @@ export default function App(): ReactElement {
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
                   handleInputChange(event)
                 }
-              ></Form.Control>
+              />
             </Form.Group>
             <Button variant="primary" className="shadow-sm" type="submit">
               Enviar
@@ -112,6 +111,7 @@ export default function App(): ReactElement {
           </Form>
         </Wrapper>
       </Container>
+      <Footer />
       <GlobalStyle />
     </>
   )
