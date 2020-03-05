@@ -26,7 +26,6 @@ export default function App() {
     content: '',
   })
   const [messages, setMessages] = useState<Array<IMessageState>>([])
-  const [connected, setConnected] = useState<boolean>(io.connected)
 
   const { id, name, content } = formData
 
@@ -42,9 +41,9 @@ export default function App() {
 
     if (name.length > 0 && content.length > 0) {
       io.emit('newMessage', formData)
-      io.emit('newMessageRecall')
-
       toast.success('REQ: Nova mensagem enviada', { className: 'bg-primary' })
+
+      io.emit('newMessageRecall')
 
       setMessages([...messages, { id, name, content }])
       setFormData({ ...formData, content: '' })
@@ -53,6 +52,10 @@ export default function App() {
 
   useEffect(() => {
     io.connect()
+
+    io.on('connect_error', () => {
+      toast.error('TA: Erro ao conectar', { className: 'bg-secondary' })
+    })
 
     io.on('connected', (message: string) => {
       toast.success(message, { className: 'bg-primary' })
@@ -66,18 +69,14 @@ export default function App() {
       toast.success(message, { className: 'bg-primary' })
     })
 
-    io.on('broadcastMessage', ({ name, content }: DTOMessage) => {
-      setMessages([...messages, { id: v4().toString(), name, content }])
-    })
-
     return () => {
       io.disconnect()
     }
   }, [])
 
-  useEffect(() => {
-    setConnected(!connected)
-  }, [io.connected])
+  io.on('broadcastMessage', ({ name, content }: DTOMessage) => {
+    setMessages([...messages, { id: v4().toString(), name, content }])
+  })
 
   return (
     <>
