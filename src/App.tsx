@@ -1,36 +1,32 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  ReactElement,
-  useState,
-  useEffect,
-} from 'react'
+import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 
 import io from './services/ws'
-import {
-  FormStateProps,
-  MessageStateProps,
-  Message as MessageType,
-} from './types'
+import { DTOMessage, IFormState, IMessageState } from './types'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
 
 import { v4 } from 'uuid'
 
+import { ToastContainer, toast } from 'react-toastify'
 import { Button, Container, Form } from 'react-bootstrap'
-import GlobalStyle, { Messages, Message, Wrapper } from './style'
+import GlobalStyle, {
+  Messages,
+  Message as MessageContainer,
+  Wrapper,
+} from './style'
 
 /**
  * App
  */
-export default function App(): ReactElement {
-  const [formData, setFormData] = useState<FormStateProps>({
+export default function App() {
+  const [formData, setFormData] = useState<IFormState>({
     id: io.id,
     name: '',
     content: '',
   })
-  const [messages, setMessages] = useState<MessageStateProps[]>([])
+  const [messages, setMessages] = useState<Array<IMessageState>>([])
+  const [connected, setConnected] = useState<boolean>(io.connected)
 
   const { id, name, content } = formData
 
@@ -53,10 +49,22 @@ export default function App(): ReactElement {
   }
 
   useEffect(() => {
-    io.emit('connected', `Estou conectado ao servidor: ${io.id}`)
+    io.connect()
+
+    io.on('connected', (message: string) => {
+      toast.success(message, { className: 'bg-primary' })
+    })
   }, [])
 
-  io.on('message', ({ name, content }: MessageType) => {
+  useEffect(() => {
+    setConnected(!connected)
+  }, [io.connected])
+
+  io.on('disconnected', (message: string) => {
+    toast.success(message, { className: 'bg-primary' })
+  })
+
+  io.on('message', ({ name, content }: DTOMessage) => {
     setMessages([...messages, { id: v4().toString(), name, content }])
   })
 
@@ -67,18 +75,17 @@ export default function App(): ReactElement {
         <Wrapper className="shadow">
           <Messages className="shadow-sm">
             {messages.map(message => (
-              <Message key={Math.random()} left={message.id !== id}>
+              <MessageContainer
+                key={message.id + Math.random()}
+                left={message.id !== id}
+              >
                 <p>
                   <strong>{message.name}</strong> {message.content}
                 </p>
-              </Message>
+              </MessageContainer>
             ))}
           </Messages>
-          <Form
-            onSubmit={(event: FormEvent<HTMLFormElement>) =>
-              handleFormSubmit(event)
-            }
-          >
+          <Form onSubmit={handleFormSubmit}>
             <Form.Group>
               <Form.Control
                 className="shadow-sm border-0"
@@ -87,9 +94,7 @@ export default function App(): ReactElement {
                 required
                 name="name"
                 value={name}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleInputChange(event)
-                }
+                onChange={handleInputChange}
               />
             </Form.Group>
             <Form.Group>
@@ -100,18 +105,29 @@ export default function App(): ReactElement {
                 required
                 name="content"
                 value={content}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleInputChange(event)
-                }
+                onChange={handleInputChange}
               />
             </Form.Group>
-            <Button variant="primary" className="shadow-sm" type="submit">
+            <Button
+              variant="primary"
+              className="shadow-sm m-auto"
+              type="submit"
+            >
               Enviar
             </Button>
           </Form>
         </Wrapper>
       </Container>
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+      />
       <GlobalStyle />
     </>
   )

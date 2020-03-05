@@ -16,15 +16,28 @@
     "@types/react-dom": "^16.9.0",
     "@types/socket.io-client": "^1.4.32",
     "@types/styled-components": "^4.4.3",
+    "@types/uuid": "^7.0.0",
     "bootswatch": "^4.4.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-scripts": "3.4.0",
+    "react-toastify": "^5.5.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "^5.0.1",
     "typescript": "~3.7.2",
     "uuid": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/socket.io-client": "^1.4.32",
+    "@types/styled-components": "^4.4.3",
+    "@types/uuid": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,16 +59,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/socket.io-client": "^1.4.32",
-    "@types/styled-components": "^4.4.3",
-    "@types/uuid": "^7.0.0",
-    "@typescript-eslint/eslint-plugin": "^1.4.2",
-    "@typescript-eslint/parser": "^1.4.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.19.1"
   }
 }

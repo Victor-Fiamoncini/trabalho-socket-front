@@ -1,20 +1,20 @@
-export interface FormStateProps {
+export interface IFormState {
   id: string
   name: string
   content: string
 }
 
-export interface MessageStateProps {
+export interface IMessageState {
   id: string
   name: string
   content: string
 }
 
-export interface Message {
+export interface DTOMessage {
   name: string
   content: string
 }
 
-export interface MessageStyledProps {
+export interface IMessageStyled {
   left: boolean
 }

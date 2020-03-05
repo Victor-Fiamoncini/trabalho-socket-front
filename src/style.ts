@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components'
-import { MessageStyledProps } from './types'
+import { IMessageStyled } from './types'
 
 export default createGlobalStyle`
   * {
@@ -46,7 +46,7 @@ export const Messages = styled.section`
   background: #fff;
 `
 
-export const Message = styled.div<MessageStyledProps>`
+export const Message = styled.div<IMessageStyled>`
   display: block;
   margin: 0;
   text-align: ${({ left }) => (left ? 'left' : 'right')} !important;
