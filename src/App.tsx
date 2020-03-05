@@ -41,7 +41,10 @@ export default function App() {
     event.preventDefault()
 
     if (name.length > 0 && content.length > 0) {
-      io.emit('message', formData)
+      io.emit('newMessage', formData)
+      io.emit('newMessageRecall')
+
+      toast.success('REQ: Nova mensagem enviada', { className: 'bg-primary' })
 
       setMessages([...messages, { id, name, content }])
       setFormData({ ...formData, content: '' })
@@ -54,19 +57,27 @@ export default function App() {
     io.on('connected', (message: string) => {
       toast.success(message, { className: 'bg-primary' })
     })
+
+    io.on('singleMessage', (message: string) => {
+      toast.success(message, { className: 'bg-primary' })
+    })
+
+    io.on('disconnected', (message: string) => {
+      toast.success(message, { className: 'bg-primary' })
+    })
+
+    io.on('broadcastMessage', ({ name, content }: DTOMessage) => {
+      setMessages([...messages, { id: v4().toString(), name, content }])
+    })
+
+    return () => {
+      io.disconnect()
+    }
   }, [])
 
   useEffect(() => {
     setConnected(!connected)
   }, [io.connected])
-
-  io.on('disconnected', (message: string) => {
-    toast.success(message, { className: 'bg-primary' })
-  })
-
-  io.on('message', ({ name, content }: DTOMessage) => {
-    setMessages([...messages, { id: v4().toString(), name, content }])
-  })
 
   return (
     <>
@@ -75,10 +86,7 @@ export default function App() {
         <Wrapper className="shadow">
           <Messages className="shadow-sm">
             {messages.map(message => (
-              <MessageContainer
-                key={message.id + Math.random()}
-                left={message.id !== id}
-              >
+              <MessageContainer key={v4()} left={message.id !== id}>
                 <p>
                   <strong>{message.name}</strong> {message.content}
                 </p>
