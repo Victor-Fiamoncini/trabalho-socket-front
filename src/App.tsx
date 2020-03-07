@@ -25,7 +25,7 @@ export default function App() {
     name: '',
     content: '',
   })
-  const [messages, setMessages] = useState<Array<IMessageState>>([])
+  const [messages, setMessages] = useState<IMessageState[]>([])
 
   const { id, name, content } = formData
 
@@ -41,9 +41,7 @@ export default function App() {
 
     if (name.length > 0 && content.length > 0) {
       io.emit('newMessage', formData)
-      toast.success('REQ: Nova mensagem enviada', { className: 'bg-primary' })
-
-      io.emit('newMessageRecall')
+      toast.success('REQ: Nova mensagem enviada', { className: 'bg-success' })
 
       setMessages([...messages, { id, name, content }])
       setFormData({ ...formData, content: '' })
@@ -58,15 +56,15 @@ export default function App() {
     })
 
     io.on('connected', (message: string) => {
-      toast.success(message, { className: 'bg-primary' })
+      toast.success(message, { className: 'bg-success' })
     })
 
     io.on('singleMessage', (message: string) => {
-      toast.success(message, { className: 'bg-primary' })
+      toast.success(message, { className: 'bg-success' })
     })
 
     io.on('disconnected', (message: string) => {
-      toast.success(message, { className: 'bg-primary' })
+      toast.success(message, { className: 'bg-success' })
     })
 
     return () => {
