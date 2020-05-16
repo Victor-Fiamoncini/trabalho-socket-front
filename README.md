@@ -1,3 +1,3 @@
-# Trabalho-Socket-Front
+# Socket Frontend Project
 
 TCP Socket work frontend - Distributed Systems Discipline - Built React/Typescript/SocketIO ...
